@@ -13,6 +13,8 @@ export type PinFn =
   | 'analogWrite'
   | 'analogRead'
   | 'tone'
+  | 'pulseIn'
+  | 'attach'
   | 'attachInterrupt';
 
 export interface PinCall {
@@ -173,7 +175,8 @@ function readArgs(code: string, open: number): string[] | null {
   return null;
 }
 
-const CALL = /\b(pinMode|digitalWrite|digitalRead|analogWrite|analogRead|tone|attachInterrupt)\s*\(/g;
+const CALL =
+  /\b(pinMode|digitalWrite|digitalRead|analogWrite|analogRead|tone|pulseIn|attach|attachInterrupt)\s*\(/g;
 
 const lineAt = (code: string, index: number) => code.slice(0, index).split('\n').length;
 

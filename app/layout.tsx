@@ -53,7 +53,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/parts" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
                 Parts
               </Link>
-              <Link href="/check" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
+              <Link href="/build" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
+                What can I build?
+              </Link>
+              <Link href="/check"className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
                 Check my code
               </Link>
               <Link href="/fix/upload"className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">

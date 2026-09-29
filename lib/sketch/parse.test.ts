@@ -83,3 +83,10 @@ describe('parseSketch features', () => {
     expect(info.usesWifi).toBe(false);
   });
 });
+
+describe('parseSketch library pin calls', () => {
+  it('reads Servo.attach and pulseIn pins', () => {
+    const src = 'Servo s;\nvoid setup(){ s.attach(9); }\nvoid loop(){ pulseIn(10, HIGH); }';
+    expect(pins(src)).toEqual([['attach', 9, 2], ['pulseIn', 10, 3]]);
+  });
+});
