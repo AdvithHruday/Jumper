@@ -6,6 +6,7 @@ import { LIBRARY, ITEMS, ITEMS_BY_ID, KIT_PRESETS } from '@/content/library';
 import { matchProjects, sortMatches, type Match } from '@/lib/library/match';
 import { useKit } from '@/lib/library/store';
 import { useHydrated } from '@/lib/progress/useHydrated';
+import { PhotoScan } from './PhotoScan';
 import type { LibraryItem } from '@/lib/library/types';
 
 const CATEGORIES: { id: LibraryItem['category']; title: string }[] = [
@@ -101,7 +102,9 @@ export function KitMatcher() {
   const later = matches.filter((m) => m.status === 'later');
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
+    <>
+      <PhotoScan />
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
       <div>
         <h3 className="m-0 text-xl font-extrabold">What do you have?</h3>
         <p className="mb-3 mt-1 text-[15px] text-muted">
@@ -178,5 +181,6 @@ export function KitMatcher() {
         )}
       </div>
     </div>
+    </>
   );
 }

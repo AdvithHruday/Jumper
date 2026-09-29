@@ -102,3 +102,11 @@ describe('library projects', () => {
     });
   }
 });
+
+describe('scanner hints', () => {
+  it('every library item says what it looks like, and nothing extra', async () => {
+    const { LOOKS } = await import('./looks');
+    expect(Object.keys(LOOKS).sort()).toEqual(ITEMS.map((i) => i.id).sort());
+    for (const [id, look] of Object.entries(LOOKS)) expect(look.length, id).toBeGreaterThan(20);
+  });
+});

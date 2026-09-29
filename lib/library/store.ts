@@ -14,6 +14,8 @@ interface KitState {
   items: Inventory;
   /** Sets how many of an item the student has; 0 removes it. */
   setQty(id: string, qty: number): void;
+  /** Adds to what is already owned, e.g. parts confirmed from a photo scan. */
+  addMany(items: Inventory): void;
   /** Replaces the whole inventory, e.g. with a starter-kit preset. */
   replace(items: Inventory): void;
   clear(): void;
@@ -38,6 +40,14 @@ export const useKit = create<KitState>()(
           const items = { ...s.items };
           if (qty <= 0) delete items[id];
           else items[id] = Math.min(qty, 99);
+          return { items };
+        }),
+      addMany: (added) =>
+        set((s) => {
+          const items = { ...s.items };
+          for (const [id, qty] of Object.entries(added)) {
+            if (qty > 0) items[id] = Math.min((items[id] ?? 0) + qty, 99);
+          }
           return { items };
         }),
       replace: (items) => set({ items: { ...items } }),
