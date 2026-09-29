@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${bricolage.variable} ${atkinson.variable} ${jetbrains.variable}`}>
       <body className="min-h-full">
         <div className="mx-auto max-w-[1200px] px-4 sm:px-5">
-          <header className="flex items-center justify-between py-4">
+          <header className="flex flex-wrap items-center justify-between gap-y-1 py-4">
             <Link href="/" className="flex items-center gap-2.5 font-head text-2xl font-extrabold text-ink" aria-label="Jumper home">
               <svg viewBox="0 0 34 22" className="h-[22px] w-[34px]" aria-hidden="true">
                 <path d="M4 18 C4 2, 30 2, 30 18" fill="none" stroke="#F2B53A" strokeWidth="4" strokeLinecap="round" />
@@ -46,12 +46,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </svg>
               Jumper
             </Link>
-            <nav className="flex gap-1.5" aria-label="Main">
+            <nav className="flex flex-wrap gap-1.5" aria-label="Main">
               <Link href="/" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
                 Projects
               </Link>
               <Link href="/parts" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
                 Parts
+              </Link>
+              <Link href="/fix/upload" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
+                Upload Doctor
               </Link>
             </nav>
           </header>
