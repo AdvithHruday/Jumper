@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Button, ButtonLink } from '@/components/ui/Button';
 import { InlineText } from './Body';
 import { useProgress, checkpointKey } from '@/lib/progress/store';
 import { useHydrated } from '@/lib/progress/useHydrated';
@@ -61,20 +61,10 @@ export function Checkpoint({
 
       {!shown && (
         <div className="flex flex-wrap gap-2.5">
-          <button
-            type="button"
-            onClick={() => say('yes')}
-            className="rounded-[10px] bg-ok px-4 py-2.5 text-[15px] font-bold text-on-ok hover:brightness-105"
-          >
+          <Button variant="success" onClick={() => say('yes')}>
             Yes, it works
-          </button>
-          <button
-            type="button"
-            onClick={() => say('no')}
-            className="rounded-[10px] px-4 py-2.5 text-[15px] font-bold shadow-[inset_0_0_0_1.5px_var(--line-strong)] hover:bg-bg"
-          >
-            No, something&apos;s off
-          </button>
+          </Button>
+          <Button onClick={() => say('no')}>No, something&apos;s off</Button>
         </div>
       )}
 
@@ -89,20 +79,13 @@ export function Checkpoint({
                 <p className="mt-2.5">Project complete.</p>
                 <div className="mt-2.5 flex flex-wrap gap-2.5">
                   {nextProject ? (
-                    <Link
-                      href={`/projects/${nextProject.id}/1`}
-                      onClick={() => playPop()}
-                      className="rounded-[10px] bg-accent px-4 py-2.5 font-bold text-on-accent hover:brightness-105"
-                    >
+                    <ButtonLink href={`/projects/${nextProject.id}/1`} variant="primary" onClick={() => playPop()}>
                       Next project: {nextProject.name}
-                    </Link>
+                    </ButtonLink>
                   ) : (
-                    <Link
-                      href="/"
-                      className="rounded-[10px] bg-accent px-4 py-2.5 font-bold text-on-accent hover:brightness-105"
-                    >
+                    <ButtonLink href="/" variant="primary">
                       See all projects
-                    </Link>
+                    </ButtonLink>
                   )}
                 </div>
               </>
@@ -128,13 +111,9 @@ export function Checkpoint({
                 </li>
               ))}
             </ol>
-            <button
-              type="button"
-              onClick={() => say('yes')}
-              className="rounded-[10px] bg-ok px-4 py-2.5 text-[15px] font-bold text-on-ok hover:brightness-105"
-            >
+            <Button variant="success" onClick={() => say('yes')}>
               It works now
-            </button>
+            </Button>
           </>
         )}
       </div>

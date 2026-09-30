@@ -15,7 +15,7 @@ test('a correct blink sketch is clean, with an honest caveat', async ({ page }) 
   await page.getByLabel('Paste your sketch').fill(
     'const int LED_PIN = 9;\nvoid setup(){ pinMode(LED_PIN, OUTPUT); }\nvoid loop(){ digitalWrite(LED_PIN, HIGH); delay(500); digitalWrite(LED_PIN, LOW); delay(500); }',
   );
-  await expect(page.getByRole('heading', { name: /no pin problems found/i })).toBeVisible();
+  await expect(page.getByText('No pin problems found')).toBeVisible();
   await expect(page.getByText(/does not prove the sketch works/i)).toBeVisible();
 });
 

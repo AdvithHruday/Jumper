@@ -15,13 +15,26 @@
   --muted: #56687a;
   --line: #d5dde4;
   --line-strong: #b9c5cf;
+  /* Control borders (inputs, buttons, steppers): 3:1 against bg and panel.
+     --line and --line-strong stay decorative, for dividers only. */
+  --border-ui: #748797;
+  /* A subtle surface for hover, callouts and inset areas inside a panel. */
+  --panel-2: #f5f8fa;
   --mat: #2c5873;
   --accent: #f2b53a;
   --on-accent: #2a1d00;
   --ok: #22774b;
   --on-ok: #ffffff;
-  --bad: #c9463d;
+  --bad: #b83b33;
+  --warn: #8a4b00;
   --link: #1d6ba6;
+  /* Tints behind status text. Yellow (--accent) still only means "do this now",
+     so a warning gets its own amber rather than borrowing it. */
+  --accent-soft: #fdf0cc;
+  --ok-soft: #e4f3ea;
+  --bad-soft: #fdecea;
+  --warn-soft: #fff1d6;
+  --info-soft: #e6f1fa;
   --code-bg: #0f1a24;
   --code-ink: #d8e4ef;
 
@@ -38,11 +51,19 @@
     --muted: #98a8b6;
     --line: #2a3743;
     --line-strong: #3c4c5a;
+    --border-ui: #667a8b;
+    --panel-2: #1d2934;
     --mat: #1f4459;
     --ok: #4cc38a;
     --on-ok: #062a17;
     --bad: #f07167;
+    --warn: #f2b35c;
     --link: #72b8ec;
+    --accent-soft: #3a2f10;
+    --ok-soft: #123222;
+    --bad-soft: #3a1b1d;
+    --warn-soft: #3a2a0e;
+    --info-soft: #12293a;
     --code-bg: #0a1118;
     /* Lifted for contrast against the dark panel; the breadboard silkscreen
        keeps its own printed colours inside the SVG. */
@@ -58,11 +79,19 @@
   --muted: #98a8b6;
   --line: #2a3743;
   --line-strong: #3c4c5a;
+  --border-ui: #667a8b;
+  --panel-2: #1d2934;
   --mat: #1f4459;
   --ok: #4cc38a;
   --on-ok: #062a17;
   --bad: #f07167;
+  --warn: #f2b35c;
   --link: #72b8ec;
+  --accent-soft: #3a2f10;
+  --ok-soft: #123222;
+  --bad-soft: #3a1b1d;
+  --warn-soft: #3a2a0e;
+  --info-soft: #12293a;
   --code-bg: #0a1118;
   --rail-plus: #f07167;
   --rail-minus: #72b8ec;
@@ -75,12 +104,20 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
+  --color-border-ui: var(--border-ui);
+  --color-panel-2: var(--panel-2);
   --color-mat: var(--mat);
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
   --color-ok: var(--ok);
   --color-on-ok: var(--on-ok);
   --color-bad: var(--bad);
+  --color-warn: var(--warn);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok-soft: var(--ok-soft);
+  --color-bad-soft: var(--bad-soft);
+  --color-warn-soft: var(--warn-soft);
+  --color-info-soft: var(--info-soft);
   --color-link: var(--link);
   --color-code-bg: var(--code-bg);
   --color-code-ink: var(--code-ink);
@@ -90,6 +127,20 @@
   --font-head: var(--font-bricolage), "Segoe UI", system-ui, sans-serif;
   --font-body: var(--font-atkinson), "Segoe UI", system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  /* Type scale. The body stays 17px on purpose (spec 9: read with one hand on
+     a breadboard); these name the sizes the pages were already improvising as
+     text-[13px] and text-[15px]. */
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.4;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.5;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.55;
+
+  /* Shape. Buttons and fields are 10px, panels 12px, as already used. */
+  --radius-control: 0.625rem;
+  --radius-panel: 0.75rem;
 }
 
 html {

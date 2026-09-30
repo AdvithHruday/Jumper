@@ -27,7 +27,10 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Jumper: your first Arduino projects',
+  title: {
+    default: 'Jumper: your first Arduino projects',
+    template: '%s | Jumper',
+  },
   description:
     'A setup guide and beginner Arduino builds. Every step shows exactly which hole to use, explains why, and helps you find the problem when something does not work.',
 };

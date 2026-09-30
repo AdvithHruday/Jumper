@@ -21,7 +21,7 @@ export async function generateMetadata({
   const { id, step } = await params;
   const project = getProject(id);
   if (!project) return {};
-  return { title: `${project.name}: step ${step} | Jumper` };
+  return { title: `${project.name}: step ${step}` };
 }
 
 export default async function StepPage({

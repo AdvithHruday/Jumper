@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ButtonLink } from '@/components/ui/Button';
 import { Body, InlineText } from './Body';
 import { CodeBlock } from './CodeBlock';
 import { Checklist } from './Checklist';
@@ -103,30 +104,18 @@ export function StepPanel({
 
       <div className="mt-5 flex justify-between gap-2.5 border-t border-line pt-4.5">
         {stepIndex > 0 ? (
-          <Link
-            href={`/projects/${project.id}/${stepIndex}`}
-            onClick={() => playClick()}
-            className="rounded-[10px] px-4 py-2.5 font-bold shadow-[inset_0_0_0_1.5px_var(--line-strong)] hover:bg-bg"
-          >
+          <ButtonLink href={`/projects/${project.id}/${stepIndex}`} onClick={() => playClick()}>
             Back
-          </Link>
+          </ButtonLink>
         ) : (
-          <Link
-            href="/"
-            onClick={() => playClick()}
-            className="rounded-[10px] px-4 py-2.5 font-bold shadow-[inset_0_0_0_1.5px_var(--line-strong)] hover:bg-bg"
-          >
+          <ButtonLink href="/" onClick={() => playClick()}>
             All projects
-          </Link>
+          </ButtonLink>
         )}
         {stepIndex < total - 1 && (
-          <Link
-            href={`/projects/${project.id}/${stepIndex + 2}`}
-            onClick={() => playPop()}
-            className="rounded-[10px] bg-accent px-4 py-2.5 font-bold text-on-accent hover:brightness-105"
-          >
+          <ButtonLink href={`/projects/${project.id}/${stepIndex + 2}`} variant="primary" onClick={() => playPop()}>
             Next step
-          </Link>
+          </ButtonLink>
         )}
       </div>
     </section>

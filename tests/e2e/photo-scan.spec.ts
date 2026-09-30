@@ -70,7 +70,7 @@ test('a scan failure shows a clear message and keeps the photos', async ({ page 
   await page.goto('/build');
   await choosePhoto(page);
   await page.getByRole('button', { name: 'Scan 1 photo' }).click();
-  await expect(page.locator('p[role="alert"]')).toContainText('not set up on this server');
+  await expect(page.getByRole('alert').filter({ hasText: /\S/ })).toContainText('not set up on this server');
   await expect(page.getByRole('button', { name: 'Scan 1 photo' })).toBeVisible();
 });
 
@@ -79,7 +79,7 @@ test('photos can be removed and the count is capped at five', async ({ page }) =
   const files = Array.from({ length: 6 }, (_, i) => ({ name: `p${i}.png`, mimeType: 'image/png', buffer: PNG }));
   await page.getByLabel('Choose photos').setInputFiles(files);
   await expect(page.getByRole('button', { name: 'Scan 5 photos' })).toBeVisible();
-  await expect(page.locator('p[role="alert"]')).toContainText('up to 5 photos');
+  await expect(page.getByRole('alert').filter({ hasText: /\S/ })).toContainText('up to 5 photos');
   await page.getByRole('button', { name: 'Remove photo 1' }).click();
   await expect(page.getByRole('button', { name: 'Scan 4 photos' })).toBeVisible();
 });

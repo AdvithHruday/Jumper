@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { ButtonLink } from '@/components/ui/Button';
 import { Scene } from '@/components/diagram/Scene';
 import { ProjectPath, ContinueButton, ResetProgress } from '@/components/ui/ProjectPath';
 import { PROJECTS, getProject } from '@/content/projects';
@@ -20,12 +20,7 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap gap-2.5">
             <ContinueButton projects={PROJECTS} />
-            <Link
-              href="/parts"
-              className="inline-flex items-center gap-2 rounded-[10px] px-4.5 py-3 font-bold shadow-[inset_0_0_0_1.5px_var(--line-strong)] hover:bg-panel"
-            >
-              Meet your parts
-            </Link>
+            <ButtonLink href="/parts">Meet your parts</ButtonLink>
           </div>
         </div>
         <div>

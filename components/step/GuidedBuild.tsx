@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
 import { Scene } from '@/components/diagram/Scene';
 import { WIRE_COLORS } from '@/components/diagram/Wire';
 import { StepPanel } from './StepPanel';
@@ -45,21 +46,16 @@ export function GuidedBuild({
     <div className="grid items-start gap-6 pb-12 pt-1 lg:grid-cols-[minmax(0,1.55fr)_minmax(330px,1fr)]">
       <div className="sticky top-0 z-[5] -mx-4 min-w-0 bg-bg px-4 pb-2 pt-[calc(env(safe-area-inset-top,0px)+6px)] lg:top-3 lg:mx-0 lg:bg-transparent lg:p-0">
         <div className="mb-2.5 flex flex-wrap items-center justify-between gap-3 px-0.5">
-          <span className="text-[15px] text-muted">
+          <nav aria-label="Breadcrumb" className="text-small text-muted">
             <Link href="/" className="text-muted underline-offset-2 hover:underline">
               Projects
             </Link>{' '}
-            / <b className="text-ink">{project.name}</b>
-          </span>
+            / <h1 className="m-0 inline font-body text-small font-bold tracking-normal text-ink">{project.name}</h1>
+          </nav>
           {project.usesBreadboard && (
-            <button
-              type="button"
-              onClick={() => setZoom((z) => !z)}
-              aria-pressed={zoom}
-              className="rounded-[10px] px-3 py-1.5 text-sm font-bold shadow-[inset_0_0_0_1.5px_var(--line-strong)] hover:bg-panel"
-            >
+            <Button size="sm" onClick={() => setZoom((z) => !z)} aria-pressed={zoom}>
               {zoom ? 'Show whole board' : 'Zoom to this step'}
-            </button>
+            </Button>
           )}
         </div>
 
@@ -69,9 +65,9 @@ export function GuidedBuild({
 
         {step?.interactive && (
           <div className="mt-2.5">
-            <button
-              type="button"
-              className="rounded-[10px] bg-accent px-4 py-2 text-sm font-bold text-on-accent"
+            <Button
+              variant="primary"
+              size="sm"
               onPointerDown={() => setPressed(true)}
               onPointerUp={() => setPressed(false)}
               onPointerLeave={() => setPressed(false)}
@@ -81,7 +77,7 @@ export function GuidedBuild({
               onKeyUp={() => setPressed(false)}
             >
               Press and hold the button
-            </button>
+            </Button>
           </div>
         )}
 

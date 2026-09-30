@@ -1,10 +1,17 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { ImagePlus, ScanSearch, X } from 'lucide-react';
 import { ITEMS_BY_ID } from '@/content/library';
 import { compressImage, UnsupportedImageError } from '@/lib/scan/image';
 import { MAX_PHOTOS, type Confidence, type ScanResponse } from '@/lib/scan/types';
 import { useKit } from '@/lib/library/store';
+import { Badge, type BadgeTone } from '@/components/ui/Badge';
+import { Button, buttonClasses } from '@/components/ui/Button';
+import { Callout } from '@/components/ui/Callout';
+import { Checkbox } from '@/components/ui/Field';
+import { Panel } from '@/components/ui/Panel';
+import { Stepper } from '@/components/ui/Stepper';
 
 interface Photo {
   key: string;
@@ -17,16 +24,13 @@ interface Pick {
   qty: number;
 }
 
-const CONFIDENCE: Record<Confidence, string> = {
-  high: 'Sure',
-  medium: 'Check this',
-  low: 'Not sure',
+const CONFIDENCE: Record<Confidence, { label: string; tone: BadgeTone }> = {
+  high: { label: 'Sure', tone: 'ok' },
+  medium: { label: 'Check this', tone: 'warn' },
+  low: { label: 'Not sure', tone: 'neutral' },
 };
 
 const isResistor = (id: string) => id.startsWith('res-');
-
-const BTN = 'h-9 w-9 rounded-lg font-bold shadow-[inset_0_0_0_1.5px_var(--line-strong)] hover:bg-panel disabled:opacity-50';
-const SECONDARY = 'rounded-[10px] px-4 py-2.5 font-bold shadow-[inset_0_0_0_1.5px_var(--line-strong)] hover:bg-panel';
 
 export function PhotoScan() {
   const addMany = useKit((s) => s.addMany);
@@ -93,7 +97,11 @@ export function PhotoScan() {
         ),
       );
     } catch (e) {
-      setError(e instanceof UnsupportedImageError ? e.message : 'Could not reach the scanner. Check your connection, or pick your parts by hand.');
+      setError(
+        e instanceof UnsupportedImageError
+          ? e.message
+          : 'Could not reach the scanner. Check your connection, or pick your parts by hand.',
+      );
     } finally {
       setBusy(false);
     }
@@ -110,21 +118,14 @@ export function PhotoScan() {
     setPhotos([]);
   }
 
-  function discard() {
-    setResult(null);
-  }
-
   const checkedCount = result ? result.parts.filter((p) => picks[p.id]?.checked).length : 0;
 
   return (
-    <section
-      aria-labelledby="scan-heading"
-      className="mb-8 rounded-xl bg-panel p-5 shadow-[inset_0_0_0_1px_var(--line)]"
-    >
-      <h3 id="scan-heading" className="m-0 text-xl font-extrabold">
+    <Panel as="section" aria-labelledby="scan-heading" className="mb-8">
+      <h2 id="scan-heading" className="m-0 text-xl font-extrabold">
         Scan your parts
-      </h3>
-      <p className="mb-0 mt-1 text-[15px] text-muted">
+      </h2>
+      <p className="mb-0 mt-1 text-small text-muted">
         Lay your parts out on a table in good light and take up to {MAX_PHOTOS} photos. We suggest what we can see, and
         you confirm before anything is added to your kit.
       </p>
@@ -132,7 +133,10 @@ export function PhotoScan() {
       {!result && (
         <>
           <div className="mt-4 flex flex-wrap items-center gap-2.5">
-            <label className={`${SECONDARY} cursor-pointer`}>
+            <label
+              className={`${buttonClasses({ variant: 'secondary' })} cursor-pointer has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-60 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-link`}
+            >
+              <ImagePlus aria-hidden size={18} />
               Choose photos
               <input
                 ref={inputRef}
@@ -145,14 +149,9 @@ export function PhotoScan() {
               />
             </label>
             {photos.length > 0 && (
-              <button
-                type="button"
-                onClick={scan}
-                disabled={busy}
-                className="rounded-[10px] bg-accent px-4 py-2.5 font-bold text-on-accent hover:brightness-105 disabled:opacity-60"
-              >
+              <Button variant="primary" icon={ScanSearch} loading={busy} onClick={scan}>
                 {busy ? 'Reading your photos…' : `Scan ${photos.length} photo${photos.length > 1 ? 's' : ''}`}
-              </button>
+              </Button>
             )}
           </div>
 
@@ -161,15 +160,15 @@ export function PhotoScan() {
               {photos.map((p, i) => (
                 <li key={p.key} className="relative">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.url} alt={`Photo ${i + 1} of your parts`} className="h-20 w-20 rounded-lg object-cover" />
+                  <img src={p.url} alt={`Photo ${i + 1} of your parts`} className="h-20 w-20 rounded-control object-cover" />
                   {!busy && (
                     <button
                       type="button"
                       aria-label={`Remove photo ${i + 1}`}
                       onClick={() => remove(p.key)}
-                      className="absolute -right-1.5 -top-1.5 h-6 w-6 rounded-full bg-ink text-[13px] font-bold text-bg"
+                      className="absolute -right-2 -top-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-ink text-bg shadow-[0_0_0_2px_var(--panel)]"
                     >
-                      ×
+                      <X aria-hidden size={14} />
                     </button>
                   )}
                 </li>
@@ -177,30 +176,30 @@ export function PhotoScan() {
             </ul>
           )}
 
-          <p className="mb-0 mt-3 text-[13px] text-muted">
-            When you tap Scan, your photos are sent to Claude (by Anthropic) to identify the parts. Jumper does not
-            store them, and location data is removed before they leave your device.
+          <p className="mb-0 mt-3 text-caption text-muted">
+            When you tap Scan, your photos are sent to Claude (by Anthropic) to identify the parts. Jumper does not store
+            them, and location data is removed before they leave your device.
           </p>
         </>
       )}
 
       {error && (
-        <p role="alert" className="mb-0 mt-3 font-bold text-bad">
+        <Callout variant="error" role="alert" className="mt-3">
           {error}
-        </p>
+        </Callout>
       )}
 
       {added !== null && (
-        <p role="status" className="mb-0 mt-3 font-bold text-ok">
+        <Callout variant="success" role="status" className="mt-3">
           {added === 0 ? 'Nothing was added.' : `Added ${added} kind${added > 1 ? 's' : ''} of part to your kit.`} Adjust
           anything below.
-        </p>
+        </Callout>
       )}
 
       {result && (
         <div className="mt-4" aria-live="polite">
-          <h4 className="m-0 text-lg font-extrabold">Here is what we think we see</h4>
-          <p className="mb-2 mt-1 text-[15px] text-muted">
+          <h3 className="m-0 font-body text-lg font-bold">Here is what we think we see</h3>
+          <p className="mb-2 mt-1 text-small text-muted">
             Tick the ones that are right and fix any count. Resistor values are read from colour bands, so check each one
             against your parts.
           </p>
@@ -211,42 +210,29 @@ export function PhotoScan() {
             <ul className="m-0 list-none p-0">
               {result.parts.map((p) => {
                 const item = ITEMS_BY_ID[p.id];
+                const name = item?.name ?? p.id;
                 const pick = picks[p.id] ?? { checked: false, qty: p.qty };
+                const conf = CONFIDENCE[p.confidence];
                 return (
                   <li key={p.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-2.5">
                     <label className="flex min-w-0 flex-1 items-start gap-2.5">
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         checked={pick.checked}
                         onChange={(e) => setPicks((s) => ({ ...s, [p.id]: { ...pick, checked: e.target.checked } }))}
-                        className="mt-1 h-5 w-5"
+                        className="mt-1"
                       />
                       <span>
-                        <span className="font-bold">{item?.name ?? p.id}</span>{' '}
-                        <span className="text-[13px] font-bold uppercase tracking-wide text-muted">{CONFIDENCE[p.confidence]}</span>
-                        <span className="block text-[15px] text-muted">{p.evidence}</span>
+                        <span className="font-bold">{name}</span> <Badge tone={conf.tone}>{conf.label}</Badge>
+                        <span className="block text-small text-muted">{p.evidence}</span>
                       </span>
                     </label>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        aria-label={`Fewer ${item?.name ?? p.id}`}
-                        className={BTN}
-                        disabled={pick.qty <= 1}
-                        onClick={() => setPicks((s) => ({ ...s, [p.id]: { ...pick, qty: pick.qty - 1 } }))}
-                      >
-                        −
-                      </button>
-                      <span className="w-6 text-center font-bold tabular-nums">{pick.qty}</span>
-                      <button
-                        type="button"
-                        aria-label={`More ${item?.name ?? p.id}`}
-                        className={BTN}
-                        onClick={() => setPicks((s) => ({ ...s, [p.id]: { ...pick, qty: Math.min(pick.qty + 1, 50) } }))}
-                      >
-                        +
-                      </button>
-                    </div>
+                    <Stepper
+                      value={pick.qty}
+                      min={1}
+                      max={50}
+                      label={name}
+                      onChange={(n) => setPicks((s) => ({ ...s, [p.id]: { ...pick, qty: n } }))}
+                    />
                   </li>
                 );
               })}
@@ -254,28 +240,21 @@ export function PhotoScan() {
           )}
 
           {result.unrecognised.length > 0 && (
-            <p className="mb-0 mt-3 text-[15px]">
+            <p className="mb-0 mt-3 text-small">
               <span className="font-bold">Seen but not in our list yet: </span>
               {result.unrecognised.join(', ')}
             </p>
           )}
-          {result.notes && <p className="mb-0 mt-3 text-[15px] text-muted">{result.notes}</p>}
+          {result.notes && <p className="mb-0 mt-3 text-small text-muted">{result.notes}</p>}
 
           <div className="mt-4 flex flex-wrap gap-2.5">
-            <button
-              type="button"
-              onClick={confirm}
-              disabled={checkedCount === 0}
-              className="rounded-[10px] bg-accent px-4 py-2.5 font-bold text-on-accent hover:brightness-105 disabled:opacity-50"
-            >
+            <Button variant="primary" onClick={confirm} disabled={checkedCount === 0}>
               Add {checkedCount} to my kit
-            </button>
-            <button type="button" onClick={discard} className={SECONDARY}>
-              Discard
-            </button>
+            </Button>
+            <Button onClick={() => setResult(null)}>Discard</Button>
           </div>
         </div>
       )}
-    </section>
+    </Panel>
   );
 }

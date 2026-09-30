@@ -31,7 +31,7 @@ test('the kit is remembered after a reload', async ({ page }) => {
 
 test('a project page shows wiring, the sketch, mistakes and an honest hardware note', async ({ page }) => {
   await page.goto('/build/line-follower');
-  await expect(page.getByRole('heading', { name: 'Line-following robot', level: 2 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Line-following robot', level: 1 })).toBeVisible();
   await expect(page.getByText(/Not built on real hardware yet/)).toBeVisible();
   await expect(page.getByRole('cell', { name: 'D5' })).toBeVisible();
   await expect(page.getByText('drive(SPEED, SPEED)')).toBeVisible();

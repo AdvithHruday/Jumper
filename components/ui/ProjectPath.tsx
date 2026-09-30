@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { Badge } from '@/components/ui/Badge';
+import { ButtonLink } from '@/components/ui/Button';
 import { useProgress } from '@/lib/progress/store';
 import { useHydrated } from '@/lib/progress/useHydrated';
 import type { Project } from '@/lib/schema/content';
@@ -36,12 +38,7 @@ export function ProjectPath({ projects }: { projects: Project[] }) {
                 <p className="mb-2 mt-1 text-muted">{p.summary}</p>
                 <span className="flex flex-wrap gap-1.5">
                   {p.learn.map((l) => (
-                    <span
-                      key={l}
-                      className="rounded-full bg-panel px-2.5 py-0.5 text-[13px] text-muted shadow-[inset_0_0_0_1px_var(--line)]"
-                    >
-                      {l}
-                    </span>
+                    <Badge key={l}>{l}</Badge>
                   ))}
                 </span>
               </span>
@@ -69,22 +66,16 @@ export function ContinueButton({ projects }: { projects: Project[] }) {
 
   if (!next) {
     return (
-      <Link
-        href={`/projects/${projects[projects.length - 1].id}/1`}
-        className="inline-flex items-center gap-2 rounded-[10px] bg-accent px-4.5 py-3 font-bold text-on-accent hover:brightness-105"
-      >
+      <ButtonLink href={`/projects/${projects[projects.length - 1].id}/1`} variant="primary">
         Build them again
-      </Link>
+      </ButtonLink>
     );
   }
 
   return (
-    <Link
-      href={`/projects/${next.id}/${(hydrated && at[next.id]) || 1}`}
-      className="inline-flex items-center gap-2 rounded-[10px] bg-accent px-4.5 py-3 font-bold text-on-accent hover:brightness-105"
-    >
+    <ButtonLink href={`/projects/${next.id}/${(hydrated && at[next.id]) || 1}`} variant="primary">
       {started ? `Continue: ${next.name}` : 'Start with setup'}
-    </Link>
+    </ButtonLink>
   );
 }
 

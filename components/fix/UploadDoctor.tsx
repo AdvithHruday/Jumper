@@ -1,9 +1,15 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { Eraser, FlaskConical, Usb } from 'lucide-react';
 import { useHydrated } from '@/lib/progress/useHydrated';
 import { diagnose, hex4, type UploadSignature, type UsbInfo } from '@/lib/fix/upload-doctor';
 import { UPLOAD_SIGNATURES, USB_DEVICES, GENERIC_UPLOAD_CHECKLIST } from '@/content/fix/upload-signatures';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { Callout } from '@/components/ui/Callout';
+import { Label, Textarea } from '@/components/ui/Field';
+import { Panel } from '@/components/ui/Panel';
 
 /** Web Serial is not in TypeScript's DOM types, so name only what we use. */
 interface SerialPortLike {
@@ -26,11 +32,7 @@ function Steps({ sig }: { sig: UploadSignature }) {
       {sig.steps.map((s, i) => (
         <li key={i}>
           {s.text}
-          {s.physical && (
-            <span className="ml-2 rounded-full bg-panel px-2 py-0.5 text-[12px] font-bold text-muted shadow-[inset_0_0_0_1px_var(--line-strong)]">
-              by hand
-            </span>
-          )}
+          {s.physical && <Badge className="ml-2">by hand</Badge>}
         </li>
       ))}
     </ol>
@@ -39,23 +41,21 @@ function Steps({ sig }: { sig: UploadSignature }) {
 
 function MatchCard({ sig, primary }: { sig: UploadSignature; primary: boolean }) {
   return (
-    <article
-      className={`rounded-xl bg-panel p-5 ${primary ? 'shadow-[inset_0_0_0_2px_var(--accent)]' : 'shadow-[inset_0_0_0_1px_var(--line)]'}`}
-    >
-      <p className="m-0 text-[13px] font-bold uppercase tracking-wide text-muted">
+    <Panel as="article" variant={primary ? 'highlight' : 'default'}>
+      <p className="m-0 text-caption font-bold uppercase tracking-wide text-muted">
         {primary ? 'Most likely' : 'Also in your log'}
       </p>
-      <h3 className="mb-1 mt-1 text-xl font-extrabold">{sig.title}</h3>
+      <h2 className="mb-1 mt-1 text-xl font-extrabold">{sig.title}</h2>
       <p className="m-0 text-muted">{sig.meaning}</p>
-      <h4 className="mb-0 mt-4 font-bold">Likely causes, most likely first</h4>
+      <h3 className="mb-0 mt-4 font-body text-body font-bold">Likely causes, most likely first</h3>
       <ul className="m-0 mt-1 list-disc space-y-1 pl-5 text-muted">
         {sig.causes.map((c) => (
           <li key={c}>{c}</li>
         ))}
       </ul>
-      <h4 className="mb-0 mt-4 font-bold">Try this, in order</h4>
+      <h3 className="mb-0 mt-4 font-body text-body font-bold">Try this, in order</h3>
       <Steps sig={sig} />
-    </article>
+    </Panel>
   );
 }
 
@@ -94,91 +94,77 @@ export function UploadDoctor() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div>
-        <label htmlFor="upload-log" className="mb-1.5 block font-bold">
-          Paste the red error text from the Arduino IDE output
-        </label>
-        <textarea
+        <Label htmlFor="upload-log">Paste the red error text from the Arduino IDE output</Label>
+        <Textarea
           id="upload-log"
+          mono
           value={log}
           onChange={(e) => setLog(e.target.value)}
           rows={10}
           spellCheck={false}
           placeholder="avrdude: stk500_getsync() attempt 1 of 10: not in sync ..."
-          className="w-full rounded-xl bg-panel p-3 font-mono text-[14px] text-ink shadow-[inset_0_0_0_1.5px_var(--line-strong)]"
         />
         <div className="mt-3 flex flex-wrap gap-2.5">
-          <button
-            type="button"
-            onClick={() => setLog(SAMPLE)}
-            className="rounded-[10px] px-4 py-2.5 font-bold shadow-[inset_0_0_0_1.5px_var(--line-strong)] hover:bg-panel"
-          >
+          <Button icon={FlaskConical} onClick={() => setLog(SAMPLE)}>
             Try an example
-          </button>
+          </Button>
           {hasLog && (
-            <button
-              type="button"
-              onClick={() => setLog('')}
-              className="rounded-[10px] px-4 py-2.5 font-bold text-muted hover:bg-panel"
-            >
+            <Button variant="ghost" icon={Eraser} onClick={() => setLog('')}>
               Clear
-            </button>
+            </Button>
           )}
         </div>
 
-        <div className="mt-6 rounded-xl bg-panel p-4 shadow-[inset_0_0_0_1px_var(--line)]">
-          <h3 className="m-0 font-bold">No error text? Detect your board</h3>
-          <p className="mb-3 mt-1 text-[15px] text-muted">
-            Plug the board in and pick its port. We read only the USB chip ID to tell you which
-            driver and settings it needs. Nothing is uploaded or sent anywhere.
+        <Panel variant="subtle" padding="sm" className="mt-6">
+          <h2 className="m-0 font-body text-body font-bold">No error text? Detect your board</h2>
+          <p className="mb-3 mt-1 text-small text-muted">
+            Plug the board in and pick its port. We read only the USB chip ID to tell you which driver and settings it
+            needs. Nothing is uploaded or sent anywhere.
           </p>
           {!hydrated ? null : serial ? (
-            <button
-              type="button"
-              onClick={detect}
-              className="rounded-[10px] bg-accent px-4 py-2.5 font-bold text-on-accent hover:brightness-105"
-            >
+            <Button variant="primary" icon={Usb} onClick={detect}>
               Detect my board
-            </button>
+            </Button>
           ) : (
-            <p className="m-0 text-[15px] text-muted">
+            <p className="m-0 text-small text-muted">
               Board detection needs Chrome or Edge on a computer. Paste the error text instead.
             </p>
           )}
-          {usbNote && <p className="mb-0 mt-3 text-[15px] text-muted">{usbNote}</p>}
-        </div>
+          {usbNote && <p className="mb-0 mt-3 text-small text-muted">{usbNote}</p>}
+        </Panel>
       </div>
 
       <div aria-live="polite" className="space-y-5">
         {result.usb && (
-          <article className="rounded-xl bg-panel p-5 shadow-[inset_0_0_0_1px_var(--line)]">
-            <p className="m-0 text-[13px] font-bold uppercase tracking-wide text-muted">Your board</p>
-            <h3 className="mb-1 mt-1 text-xl font-extrabold">
+          <Panel as="article">
+            <p className="m-0 text-caption font-bold uppercase tracking-wide text-muted">Your board</p>
+            <h2 className="mb-1 mt-1 text-xl font-extrabold">
               USB chip: {result.usb.chip}{' '}
-              <span className="font-mono text-[14px] font-normal text-muted">
+              <span className="font-mono text-small font-normal text-muted">
                 {hex4(result.usb.vid)}:{hex4(result.usb.pid)}
               </span>
-            </h3>
+            </h2>
             <p className="m-0 text-muted">Usually found on {result.usb.usuallyOn}.</p>
             <ul className="m-0 mt-3 list-disc space-y-1 pl-5">
               {result.usb.hints.map((h) => (
                 <li key={h}>{h}</li>
               ))}
             </ul>
-          </article>
+          </Panel>
         )}
         {result.unknownUsb && (
-          <article className="rounded-xl bg-panel p-5 shadow-[inset_0_0_0_1px_var(--line)]">
-            <h3 className="m-0 text-xl font-extrabold">
+          <Panel as="article">
+            <h2 className="m-0 text-xl font-extrabold">
               Unrecognised USB chip{' '}
-              <span className="font-mono text-[14px] font-normal text-muted">
+              <span className="font-mono text-small font-normal text-muted">
                 {hex4(result.unknownUsb.vendorId)}:{hex4(result.unknownUsb.productId)}
               </span>
-            </h3>
+            </h2>
             <p className="mb-0 mt-1 text-muted">
-              We do not have this adapter in our list yet. Search for that ID with the word
-              &quot;driver&quot; to find what it needs.
+              We do not have this adapter in our list yet. Search for that ID with the word &quot;driver&quot; to find
+              what it needs.
             </p>
-          </article>
+          </Panel>
         )}
 
         {result.matches.map((m, i) => (
@@ -186,23 +172,19 @@ export function UploadDoctor() {
         ))}
 
         {hasLog && result.matches.length === 0 && (
-          <article className="rounded-xl bg-panel p-5 shadow-[inset_0_0_0_1px_var(--line)]">
-            <h3 className="m-0 text-xl font-extrabold">We do not recognise this error yet</h3>
-            <p className="mb-0 mt-1 text-muted">
-              These checks fix most failed uploads, so start here:
-            </p>
+          <Panel as="article">
+            <h2 className="m-0 text-xl font-extrabold">We do not recognise this error yet</h2>
+            <p className="mb-0 mt-1 text-muted">These checks fix most failed uploads, so start here:</p>
             <ol className="m-0 mt-2 list-decimal space-y-2 pl-5">
               {GENERIC_UPLOAD_CHECKLIST.map((c) => (
                 <li key={c}>{c}</li>
               ))}
             </ol>
-          </article>
+          </Panel>
         )}
 
         {!hasLog && !result.usb && !result.unknownUsb && (
-          <p className="m-0 text-muted">
-            Your diagnosis shows up here. Try the example to see how it reads.
-          </p>
+          <Callout variant="info">Your diagnosis shows up here. Try the example to see how it reads.</Callout>
         )}
       </div>
     </div>
