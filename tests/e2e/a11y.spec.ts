@@ -50,6 +50,7 @@ const SCENARIOS: Scenario[] = [
   { name: 'guided checkpoint', path: '/learn/projects/first-light/8' },
   { name: 'design system', path: '/design' },
   { name: 'about', path: '/about' },
+  { name: '404 page', path: '/no-such-page' },
   { name: 'privacy', path: '/privacy' },
   {
     name: 'menu open',
