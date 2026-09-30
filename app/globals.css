@@ -41,6 +41,9 @@
   /* Rail markings on the breadboard, and rail references in prose. */
   --rail-plus: #d8413b;
   --rail-minus: #3b6fd8;
+
+  /* Lets native controls, scrollbars and form popups follow the theme. */
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -69,6 +72,7 @@
        keeps its own printed colours inside the SVG. */
     --rail-plus: #f07167;
     --rail-minus: #72b8ec;
+    color-scheme: dark;
   }
 }
 
@@ -95,6 +99,7 @@
   --code-bg: #0a1118;
   --rail-plus: #f07167;
   --rail-minus: #72b8ec;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -137,6 +142,9 @@
   --text-small--line-height: 1.5;
   --text-body: 1.0625rem;
   --text-body--line-height: 1.55;
+
+  /* The one floating surface (the menu): a soft drop shadow plus the panel ring. */
+  --shadow-pop: 0 10px 30px rgb(0 0 0 / 0.18), inset 0 0 0 1px var(--line-strong);
 
   /* Shape. Buttons and fields are 10px, panels 12px, as already used. */
   --radius-control: 0.625rem;

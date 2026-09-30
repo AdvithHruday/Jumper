@@ -14,6 +14,19 @@ export const BRAND = {
   repoUrl: process.env.NEXT_PUBLIC_REPO_URL ?? 'https://github.com/vishnu601/Jumper',
 } as const;
 
+/** Who built it, as shown on the About page. Change here, nowhere else. */
+export const TEAM = [
+  { name: 'Advith Hruday Ravulapati', email: 'advithruday@gmail.com' },
+  { name: 'Vishnu Ganesh Mukkavilli', email: 'Mukkavilli.vishnu@gmail.com' },
+] as const;
+
+/**
+ * Where privacy and data questions go. Deliberately unset until a dedicated
+ * project address exists: the Privacy page shows this only when it is set and
+ * never invents one.
+ */
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
+
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 
 /** Mirrors --accent, --mat, --bg, --ink and --muted for files that cannot use CSS variables. */

@@ -49,6 +49,16 @@ const SCENARIOS: Scenario[] = [
   { name: 'guided step', path: '/learn/projects/first-light/4' },
   { name: 'guided checkpoint', path: '/learn/projects/first-light/8' },
   { name: 'design system', path: '/design' },
+  { name: 'about', path: '/about' },
+  { name: 'privacy', path: '/privacy' },
+  {
+    name: 'menu open',
+    path: '/fix',
+    act: async (page) => {
+      await page.getByRole('button', { name: 'Menu' }).click();
+      await page.locator('#site-menu').waitFor();
+    },
+  },
 ];
 
 for (const scheme of ['light', 'dark'] as const) {

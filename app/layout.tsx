@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import Link from 'next/link';
 import { Bricolage_Grotesque, Atkinson_Hyperlegible, JetBrains_Mono } from 'next/font/google';
-import { Logo } from '@/components/brand/Logo';
+import { SiteFooter } from '@/components/shell/SiteFooter';
+import { SiteHeader } from '@/components/shell/SiteHeader';
 import { BRAND, BRAND_COLORS, SITE_URL } from '@/lib/brand';
+import { THEME_INIT_SCRIPT } from '@/lib/theme';
 import './globals.css';
 
 /**
@@ -49,32 +50,26 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${atkinson.variable} ${jetbrains.variable}`}>
+    // suppressHydrationWarning: the inline script below sets data-theme on <html>
+    // before React hydrates, which is the point (no white flash), and would
+    // otherwise be reported as a mismatch.
+    <html lang="en" suppressHydrationWarning className={`${bricolage.variable} ${atkinson.variable} ${jetbrains.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="min-h-full">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-control focus:bg-accent focus:px-4 focus:py-2.5 focus:font-bold focus:text-on-accent"
+        >
+          Skip to content
+        </a>
         <div className="mx-auto max-w-[1200px] px-4 sm:px-5">
-          <header className="flex flex-wrap items-center justify-between gap-y-1 py-4">
-            <Link href="/" aria-label={`${BRAND.name} home`}>
-              <Logo />
-            </Link>
-            <nav className="flex flex-wrap gap-1.5" aria-label="Main">
-              <Link href="/learn" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
-                Projects
-              </Link>
-              <Link href="/parts" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
-                Parts
-              </Link>
-              <Link href="/learn/build" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
-                What can I build?
-              </Link>
-              <Link href="/fix/code" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
-                Check my code
-              </Link>
-              <Link href="/fix/upload" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">
-                Upload Doctor
-              </Link>
-            </nav>
-          </header>
-          <main>{children}</main>
+          <SiteHeader />
+          <main id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
+          <SiteFooter />
         </div>
       </body>
     </html>
