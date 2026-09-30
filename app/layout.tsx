@@ -1,6 +1,8 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 import { Bricolage_Grotesque, Atkinson_Hyperlegible, JetBrains_Mono } from 'next/font/google';
+import { Logo } from '@/components/brand/Logo';
+import { BRAND, BRAND_COLORS, SITE_URL } from '@/lib/brand';
 import './globals.css';
 
 /**
@@ -27,12 +29,22 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Jumper: your first Arduino projects',
-    template: '%s | Jumper',
+    default: `${BRAND.name}: ${BRAND.tagline}`,
+    template: `%s | ${BRAND.name}`,
   },
-  description:
-    'A setup guide and beginner Arduino builds. Every step shows exactly which hole to use, explains why, and helps you find the problem when something does not work.',
+  description: BRAND.description,
+  applicationName: BRAND.name,
+  openGraph: { siteName: BRAND.name, type: 'website' },
+  twitter: { card: 'summary_large_image' },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: BRAND_COLORS.light },
+    { media: '(prefers-color-scheme: dark)', color: BRAND_COLORS.dark },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -41,13 +53,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full">
         <div className="mx-auto max-w-[1200px] px-4 sm:px-5">
           <header className="flex flex-wrap items-center justify-between gap-y-1 py-4">
-            <Link href="/" className="flex items-center gap-2.5 font-head text-2xl font-extrabold text-ink" aria-label="Jumper home">
-              <svg viewBox="0 0 34 22" className="h-[22px] w-[34px]" aria-hidden="true">
-                <path d="M4 18 C4 2, 30 2, 30 18" fill="none" stroke="#F2B53A" strokeWidth="4" strokeLinecap="round" />
-                <rect x="1.5" y="16" width="5" height="5" rx="1" fill="currentColor" />
-                <rect x="27.5" y="16" width="5" height="5" rx="1" fill="currentColor" />
-              </svg>
-              Jumper
+            <Link href="/" aria-label={`${BRAND.name} home`}>
+              <Logo />
             </Link>
             <nav className="flex flex-wrap gap-1.5" aria-label="Main">
               <Link href="/" className="rounded-lg px-3 py-2 text-[15px] font-bold text-ink hover:bg-panel">

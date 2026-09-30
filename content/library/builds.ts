@@ -140,7 +140,7 @@ WebServer server(80);
 
 void sendPage() {
   server.send(200, "text/html",
-    "<h1>Jumper LED</h1><p><a href='/on'>Turn on</a> | <a href='/off'>Turn off</a></p>");
+    "<h1>Ohmwise LED</h1><p><a href='/on'>Turn on</a> | <a href='/off'>Turn off</a></p>");
 }
 
 void turnOn() {

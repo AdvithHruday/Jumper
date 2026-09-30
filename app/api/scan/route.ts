@@ -8,7 +8,7 @@ import { ALLOWED_TYPES, MAX_PHOTOS, MAX_PHOTO_BYTES, type ScanError } from '@/li
 /**
  * Photo scan: reads 1-5 photos of a student's parts and proposes what it can
  * see, from the library catalog only. The photos are forwarded to the Claude
- * API for this one request and never stored by Jumper.
+ * API for this one request and never stored by Ohmwise.
  *
  * Needs ANTHROPIC_API_KEY on the server. Without it the route answers 503 and
  * the page falls back to picking parts by hand.

@@ -177,7 +177,7 @@ export function PhotoScan() {
           )}
 
           <p className="mb-0 mt-3 text-caption text-muted">
-            When you tap Scan, your photos are sent to Claude (by Anthropic) to identify the parts. Jumper does not store
+            When you tap Scan, your photos are sent to Claude (by Anthropic) to identify the parts. Ohmwise does not store
             them, and location data is removed before they leave your device.
           </p>
         </>

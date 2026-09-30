@@ -65,7 +65,7 @@ export const libraryProjectSchema = z.object({
   errors: z.array(commonErrorSchema).min(2),
   /** Safety or context a student must read before building. */
   warnings: z.array(z.string().min(1)).optional(),
-  /** Link to the step-by-step guided version, when Jumper has one. */
+  /** Link to the step-by-step guided version, when Ohmwise has one. */
   guidedId: z.string().optional(),
   /** True only after someone built it on real hardware and it worked. */
   verified: z.boolean(),

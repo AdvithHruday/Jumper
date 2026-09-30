@@ -87,7 +87,7 @@ export function CodeChecker() {
             </Select>
           </div>
           <div>
-            <Label htmlFor="check-project">Compare with a Jumper project</Label>
+            <Label htmlFor="check-project">Compare with a guided project</Label>
             <Select
               id="check-project"
               value={projectId}
@@ -105,7 +105,7 @@ export function CodeChecker() {
         </div>
         {board.family !== 'avr' && (
           <p className="mb-0 mt-2 text-small text-muted">
-            Jumper&apos;s guided projects are wired to an Arduino Uno, so comparing wiring is not available for this board yet.
+            The guided projects are wired to an Arduino Uno, so comparing wiring is not available for this board yet.
           </p>
         )}
 

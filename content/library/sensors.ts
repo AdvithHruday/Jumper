@@ -250,7 +250,7 @@ void setup() {
   lcd.init();
   lcd.backlight();
   lcd.setCursor(0, 0);
-  lcd.print("Hello, Jumper!");
+  lcd.print("Hello, Ohmwise!");
   lcd.setCursor(0, 1);
   lcd.print("It works :)");
 }
