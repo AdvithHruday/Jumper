@@ -30,7 +30,7 @@ test('scan, review, confirm: only what the student ticks reaches the kit', async
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(RESULT) });
   });
 
-  await page.goto('/build');
+  await page.goto('/learn/build');
   await choosePhoto(page);
   await page.getByRole('button', { name: 'Scan 1 photo' }).click();
   await expect(page.getByRole('heading', { name: /here is what we think we see/i })).toBeVisible();
@@ -67,7 +67,7 @@ test('a scan failure shows a clear message and keeps the photos', async ({ page 
       body: JSON.stringify({ error: 'not_configured', message: 'Photo scan is not set up on this server yet. Pick your parts by hand instead.' }),
     }),
   );
-  await page.goto('/build');
+  await page.goto('/learn/build');
   await choosePhoto(page);
   await page.getByRole('button', { name: 'Scan 1 photo' }).click();
   await expect(page.getByRole('alert').filter({ hasText: /\S/ })).toContainText('not set up on this server');
@@ -75,7 +75,7 @@ test('a scan failure shows a clear message and keeps the photos', async ({ page 
 });
 
 test('photos can be removed and the count is capped at five', async ({ page }) => {
-  await page.goto('/build');
+  await page.goto('/learn/build');
   const files = Array.from({ length: 6 }, (_, i) => ({ name: `p${i}.png`, mimeType: 'image/png', buffer: PNG }));
   await page.getByLabel('Choose photos').setInputFiles(files);
   await expect(page.getByRole('button', { name: 'Scan 5 photos' })).toBeVisible();

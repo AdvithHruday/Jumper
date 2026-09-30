@@ -37,7 +37,7 @@ function Card({ m }: { m: Match }) {
   const p = m.project;
   return (
     <li>
-      <Link href={`/build/${p.id}`} className="block rounded-panel">
+      <Link href={`/learn/build/${p.id}`} className="block rounded-panel">
         <Panel padding="sm" className="transition-shadow hover:shadow-[inset_0_0_0_1.5px_var(--border-ui)]">
           <h3 className="m-0 text-lg font-extrabold">{p.name}</h3>
           <p className="mb-0 mt-1 text-muted">{p.summary}</p>

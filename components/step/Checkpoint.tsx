@@ -79,11 +79,11 @@ export function Checkpoint({
                 <p className="mt-2.5">Project complete.</p>
                 <div className="mt-2.5 flex flex-wrap gap-2.5">
                   {nextProject ? (
-                    <ButtonLink href={`/projects/${nextProject.id}/1`} variant="primary" onClick={() => playPop()}>
+                    <ButtonLink href={`/learn/projects/${nextProject.id}/1`} variant="primary" onClick={() => playPop()}>
                       Next project: {nextProject.name}
                     </ButtonLink>
                   ) : (
-                    <ButtonLink href="/" variant="primary">
+                    <ButtonLink href="/learn" variant="primary">
                       See all projects
                     </ButtonLink>
                   )}

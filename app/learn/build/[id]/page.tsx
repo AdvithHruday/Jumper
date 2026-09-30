@@ -28,7 +28,7 @@ export default async function BuildDetailPage({ params }: { params: Promise<{ id
 
   return (
     <article className="pb-12 pt-3">
-      <ButtonLink href="/build" variant="ghost" size="sm" icon={ArrowLeft} className="-ml-3">
+      <ButtonLink href="/learn/build" variant="ghost" size="sm" icon={ArrowLeft} className="-ml-3">
         All builds
       </ButtonLink>
       <PageHeader
@@ -105,7 +105,7 @@ export default async function BuildDetailPage({ params }: { params: Promise<{ id
       <CodeBlock file={p.code.file} source={p.code.source} />
       <p className="mt-0 text-small text-muted">
         Changed something? Paste your version into{' '}
-        <Link href="/check" className="font-bold text-link underline">
+        <Link href="/fix/code" className="font-bold text-link underline">
           Check my code
         </Link>{' '}
         to catch pin mistakes.
@@ -137,7 +137,7 @@ export default async function BuildDetailPage({ params }: { params: Promise<{ id
 
       {p.guidedId && (
         <p className="mb-0 mt-6">
-          <ButtonLink href={`/projects/${p.guidedId}/1`} variant="primary" icon={Layers}>
+          <ButtonLink href={`/learn/projects/${p.guidedId}/1`} variant="primary" icon={Layers}>
             Build it step by step with diagrams
           </ButtonLink>
         </p>

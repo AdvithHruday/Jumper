@@ -9,7 +9,7 @@ import { test, expect, type Page } from '@playwright/test';
 const FIRST_LIGHT_STEPS = 8;
 
 async function goToStep(page: Page, step: number) {
-  await page.goto(`/projects/first-light/${step}`);
+  await page.goto(`/learn/projects/first-light/${step}`);
   await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
 }
 
@@ -150,6 +150,6 @@ test('renders at 360px with no horizontal overflow on any step', async ({ page }
 });
 
 test('an unknown project or step is a 404', async ({ page }) => {
-  expect((await page.goto('/projects/nope/1'))?.status()).toBe(404);
-  expect((await page.goto('/projects/first-light/99'))?.status()).toBe(404);
+  expect((await page.goto('/learn/projects/nope/1'))?.status()).toBe(404);
+  expect((await page.goto('/learn/projects/first-light/99'))?.status()).toBe(404);
 });

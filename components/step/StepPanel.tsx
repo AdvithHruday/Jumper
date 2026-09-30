@@ -32,7 +32,7 @@ export function StepPanel({
         {project.steps.map((s, i) => (
           <Link
             key={i}
-            href={`/projects/${project.id}/${i + 1}`}
+            href={`/learn/projects/${project.id}/${i + 1}`}
             aria-label={`Step ${i + 1}: ${s.title}`}
             aria-current={i === stepIndex ? 'step' : undefined}
             onClick={() => playPop()}
@@ -104,16 +104,16 @@ export function StepPanel({
 
       <div className="mt-5 flex justify-between gap-2.5 border-t border-line pt-4.5">
         {stepIndex > 0 ? (
-          <ButtonLink href={`/projects/${project.id}/${stepIndex}`} onClick={() => playClick()}>
+          <ButtonLink href={`/learn/projects/${project.id}/${stepIndex}`} onClick={() => playClick()}>
             Back
           </ButtonLink>
         ) : (
-          <ButtonLink href="/" onClick={() => playClick()}>
+          <ButtonLink href="/learn" onClick={() => playClick()}>
             All projects
           </ButtonLink>
         )}
         {stepIndex < total - 1 && (
-          <ButtonLink href={`/projects/${project.id}/${stepIndex + 2}`} variant="primary" onClick={() => playPop()}>
+          <ButtonLink href={`/learn/projects/${project.id}/${stepIndex + 2}`} variant="primary" onClick={() => playPop()}>
             Next step
           </ButtonLink>
         )}

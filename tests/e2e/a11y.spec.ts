@@ -18,19 +18,21 @@ type Scenario = { name: string; path: string; act?: (page: Page) => Promise<void
 const SCENARIOS: Scenario[] = [
   { name: 'home', path: '/' },
   { name: 'parts', path: '/parts' },
-  { name: 'build (empty)', path: '/build' },
+  { name: 'fix hub', path: '/fix' },
+  { name: 'learn hub', path: '/learn' },
+  { name: 'build (empty)', path: '/learn/build' },
   {
     name: 'build (kit chosen)',
-    path: '/build',
+    path: '/learn/build',
     act: async (page) => {
       await page.getByRole('button', { name: 'Bigger Uno kit' }).click();
       await page.getByRole('heading', { name: /you can build these now/i }).waitFor();
     },
   },
-  { name: 'build project', path: '/build/line-follower' },
+  { name: 'build project', path: '/learn/build/line-follower' },
   {
     name: 'check my code (findings)',
-    path: '/check',
+    path: '/fix/code',
     act: async (page) => {
       await page.getByRole('button', { name: /try an example with bugs/i }).click();
       await page.getByText(/problems?,/).waitFor();
@@ -44,8 +46,8 @@ const SCENARIOS: Scenario[] = [
       await page.getByText('Most likely', { exact: true }).waitFor();
     },
   },
-  { name: 'guided step', path: '/projects/first-light/4' },
-  { name: 'guided checkpoint', path: '/projects/first-light/8' },
+  { name: 'guided step', path: '/learn/projects/first-light/4' },
+  { name: 'guided checkpoint', path: '/learn/projects/first-light/8' },
   { name: 'design system', path: '/design' },
 ];
 

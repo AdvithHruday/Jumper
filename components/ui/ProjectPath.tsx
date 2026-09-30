@@ -24,7 +24,7 @@ export function ProjectPath({ projects }: { projects: Project[] }) {
         return (
           <li key={p.id}>
             <Link
-              href={`/projects/${p.id}/${!isDone && resume ? resume : 1}`}
+              href={`/learn/projects/${p.id}/${!isDone && resume ? resume : 1}`}
               className="grid grid-cols-[48px_minmax(0,1fr)] items-center gap-3.5 rounded border-b border-line px-2 py-5 hover:bg-panel sm:grid-cols-[72px_minmax(0,1fr)_auto] sm:gap-5"
             >
               <span
@@ -66,14 +66,14 @@ export function ContinueButton({ projects }: { projects: Project[] }) {
 
   if (!next) {
     return (
-      <ButtonLink href={`/projects/${projects[projects.length - 1].id}/1`} variant="primary">
+      <ButtonLink href={`/learn/projects/${projects[projects.length - 1].id}/1`} variant="primary">
         Build them again
       </ButtonLink>
     );
   }
 
   return (
-    <ButtonLink href={`/projects/${next.id}/${(hydrated && at[next.id]) || 1}`} variant="primary">
+    <ButtonLink href={`/learn/projects/${next.id}/${(hydrated && at[next.id]) || 1}`} variant="primary">
       {started ? `Continue: ${next.name}` : 'Start with setup'}
     </ButtonLink>
   );

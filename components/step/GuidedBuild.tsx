@@ -47,8 +47,8 @@ export function GuidedBuild({
       <div className="sticky top-0 z-[5] -mx-4 min-w-0 bg-bg px-4 pb-2 pt-[calc(env(safe-area-inset-top,0px)+6px)] lg:top-3 lg:mx-0 lg:bg-transparent lg:p-0">
         <div className="mb-2.5 flex flex-wrap items-center justify-between gap-3 px-0.5">
           <nav aria-label="Breadcrumb" className="text-small text-muted">
-            <Link href="/" className="text-muted underline-offset-2 hover:underline">
-              Projects
+            <Link href="/learn" className="text-muted underline-offset-2 hover:underline">
+              Learn
             </Link>{' '}
             / <h1 className="m-0 inline font-body text-small font-bold tracking-normal text-ink">{project.name}</h1>
           </nav>
