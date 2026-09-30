@@ -64,7 +64,7 @@ export function Checkpoint({
           <button
             type="button"
             onClick={() => say('yes')}
-            className="rounded-[10px] bg-ok px-4 py-2.5 text-[15px] font-bold text-white hover:brightness-105"
+            className="rounded-[10px] bg-ok px-4 py-2.5 text-[15px] font-bold text-on-ok hover:brightness-105"
           >
             Yes, it works
           </button>
@@ -131,7 +131,7 @@ export function Checkpoint({
             <button
               type="button"
               onClick={() => say('yes')}
-              className="rounded-[10px] bg-ok px-4 py-2.5 text-[15px] font-bold text-white hover:brightness-105"
+              className="rounded-[10px] bg-ok px-4 py-2.5 text-[15px] font-bold text-on-ok hover:brightness-105"
             >
               It works now
             </button>

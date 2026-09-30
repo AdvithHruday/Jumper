@@ -260,6 +260,18 @@ export const RULES: LintRule[] = [
   wiringMismatch,
 ];
 
+/**
+ * Capitalises the first word of a message, unless it is code. `analogRead()` and
+ * `pinMode(...)` are case-sensitive, so a message that opens with one must keep
+ * its spelling: "AnalogRead()" would teach a student a call that does not exist.
+ */
+export function sentenceCase(message: string): string {
+  const word = message.match(/^[A-Za-z_][A-Za-z0-9_]*/)?.[0];
+  if (!word) return message;
+  const isPlainWord = word === word.toLowerCase() && message[word.length] !== '(';
+  return isPlainWord ? word.charAt(0).toUpperCase() + message.slice(1) : message;
+}
+
 const ORDER: Record<LintSeverity, number> = { error: 0, warning: 1, info: 2 };
 
 export interface LintOptions {
@@ -276,6 +288,6 @@ export function lintSketch(source: string, board: BoardSpec, opts: LintOptions =
   const ctx: LintContext = { board, info, wiring: opts.wiring, calls };
   return (opts.rules ?? RULES)
     .flatMap((rule) => rule(ctx))
-    .map((f) => ({ ...f, message: f.message.charAt(0).toUpperCase() + f.message.slice(1) }))
+    .map((f) => ({ ...f, message: sentenceCase(f.message) }))
     .sort((a, b) => ORDER[a.severity] - ORDER[b.severity] || (a.line ?? 0) - (b.line ?? 0));
 }

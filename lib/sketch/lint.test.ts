@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { lintSketch, type ExpectedWiring } from './lint';
+import { lintSketch, sentenceCase, type ExpectedWiring } from './lint';
 import { uno, nano } from '@/content/boards/avr';
 import { esp32DevkitV1 as esp } from '@/content/boards/esp32';
 import type { BoardSpec } from '@/lib/boards/types';
@@ -204,12 +204,52 @@ describe('ordering', () => {
   });
 });
 
+describe('sentenceCase', () => {
+  it('capitalises a plain first word', () => {
+    expect(sentenceCase('pin 1 is shared')).toBe('Pin 1 is shared');
+    expect(sentenceCase('the "X" circuit')).toBe('The "X" circuit');
+  });
+  it('never changes a code identifier', () => {
+    expect(sentenceCase('analogRead() on pin 9')).toBe('analogRead() on pin 9');
+    expect(sentenceCase('digitalWrite() on pin 10')).toBe('digitalWrite() on pin 10');
+    expect(sentenceCase('pinMode(9, OUTPUT) is missing')).toBe('pinMode(9, OUTPUT) is missing');
+  });
+  it('keeps a lowercase function call lowercase', () => {
+    expect(sentenceCase('tone() on pin 3 clashes')).toBe('tone() on pin 3 clashes');
+  });
+  it('leaves already-capitalised and empty text alone', () => {
+    expect(sentenceCase('Pin 1 is shared')).toBe('Pin 1 is shared');
+    expect(sentenceCase('')).toBe('');
+  });
+});
+
 describe('messages', () => {
-  it('start with a capital letter', () => {
-    const f = lintSketch('void setup(){ Serial.begin(9600); pinMode(1, OUTPUT); }', uno, {
+  // Regression: a blanket "capitalise the first letter" once produced
+  // "AnalogRead()" and "DigitalWrite()" in real findings.
+  const BUGGY = `const int LED = 10;
+void setup() { Serial.begin(9600); pinMode(1, OUTPUT); }
+void loop() { digitalWrite(LED, HIGH); analogWrite(4, 100); int v = analogRead(9); }`;
+
+  it('never capitalises an API name, on any rule that opens with one', () => {
+    const findings = lintSketch(BUGGY, uno, {
       wiring: { label: 'the "X" circuit', outputs: [{ pin: 9, what: 'an LED' }] },
     });
-    expect(f.length).toBeGreaterThan(0);
-    for (const x of f) expect(x.message[0]).toBe(x.message[0].toUpperCase());
+    const opening = findings.map((f) => f.message.split(/[\s(]/)[0]);
+    expect(opening).toContain('analogRead');
+    expect(opening).toContain('digitalWrite');
+    for (const f of findings) {
+      expect(f.message).not.toMatch(/^(AnalogRead|AnalogWrite|DigitalRead|DigitalWrite|PinMode|AttachInterrupt|Tone)\b/);
+    }
+  });
+
+  it('starts every sentence-opening word with a capital', () => {
+    const findings = lintSketch(BUGGY, uno, {
+      wiring: { label: 'the "X" circuit', outputs: [{ pin: 9, what: 'an LED' }] },
+    });
+    for (const f of findings) {
+      const first = f.message.match(/^[A-Za-z_][A-Za-z0-9_]*/)?.[0] ?? '';
+      const isCode = first !== first.toLowerCase() || f.message[first.length] === '(';
+      if (!isCode) expect(first[0]).toBe(first[0].toUpperCase());
+    }
   });
 });
