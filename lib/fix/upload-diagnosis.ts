@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * Upload Doctor: matches the text of a failed upload against a table of known
+ * Fix my upload: matches the text of a failed upload against a table of known
  * failure signatures and returns a ranked list of causes and fixes.
  *
  * Deterministic on purpose. The knowledge lives in `content/fix`, this file

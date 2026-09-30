@@ -142,7 +142,7 @@ describe('strapping-pin', () => {
 });
 
 describe('uart-pin-in-use', () => {
-  it('is an error when Serial is also used, with a link to the Upload Doctor', () => {
+  it('is an error when Serial is also used, with a link to Fix my upload', () => {
     const f = lintSketch(sketch('digitalWrite(1, 1);', 'Serial.begin(9600); pinMode(1, OUTPUT);'), uno);
     const hit = f.find((x) => x.rule === 'uart-pin-in-use');
     expect(hit?.severity).toBe('error');

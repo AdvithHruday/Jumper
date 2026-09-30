@@ -178,7 +178,7 @@ void loop() {
   },
   errors: [
     { symptom: 'It never connects (only dots)', cause: 'The name or password is wrong, or the network is 5 GHz. The ESP32 only supports 2.4 GHz.', fix: 'Check the spelling, and use a 2.4 GHz network or a phone hotspot set to 2.4 GHz.' },
-    { symptom: 'Upload fails with "Timed out waiting for packet header"', cause: 'The ESP32 is not in download mode.', fix: 'Use the Upload Doctor; usually hold the BOOT button while it says "Connecting".' },
+    { symptom: 'Upload fails with "Timed out waiting for packet header"', cause: 'The ESP32 is not in download mode.', fix: 'Use Fix my upload; usually hold the BOOT button while it says "Connecting".' },
     { symptom: 'The page will not open', cause: 'The phone or computer is on a different network, or the address was typed wrongly.', fix: 'Join the same WiFi and copy the address exactly from the Serial Monitor.' },
     { symptom: 'The LED does not light', cause: 'It is in backwards or on a different pin than the sketch.', fix: 'Long leg toward GPIO4 through the resistor, and check LED_PIN.' },
   ],

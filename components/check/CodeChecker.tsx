@@ -26,7 +26,7 @@ function FindingCard({ f }: { f: LintFinding }) {
       {f.link && (
         <p className="mb-0 mt-2 text-small">
           <Link href={f.link.href} className="font-bold text-link underline">
-            Open the {f.link.label}
+            Open {f.link.label}
           </Link>
         </p>
       )}

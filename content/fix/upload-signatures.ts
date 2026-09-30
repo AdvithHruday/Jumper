@@ -1,4 +1,4 @@
-import type { UploadSignature, UsbDevice } from '@/lib/fix/upload-doctor';
+import type { UploadSignature, UsbDevice } from '@/lib/fix/upload-diagnosis';
 
 /**
  * Known upload failures. Each `pattern` is matched against the text a student
@@ -255,7 +255,7 @@ export const GENERIC_UPLOAD_CHECKLIST: string[] = [
 
 /**
  * USB vendor:product IDs of adapters common on student boards. Web Serial only
- * reports these two numbers, so this table is how the doctor names the chip.
+ * reports these two numbers, so this table is how the tool names the chip.
  * Values are from the public usb.ids registry; add new adapters as students
  * report them.
  */

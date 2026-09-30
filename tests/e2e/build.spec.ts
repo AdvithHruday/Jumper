@@ -13,13 +13,12 @@ async function goToStep(page: Page, step: number) {
   await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
 }
 
-test('the home page offers the first project and shows the finished circuit', async ({ page }) => {
+test('the home page shows the finished guided circuit and a way to start it', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: /one wire at a time/i })).toBeVisible();
-  await expect(page.getByRole('link', { name: /start with setup/i })).toBeVisible();
   await expect(
     page.getByRole('img', { name: /finished LED circuit with the LED blinking/i }),
   ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Start it' })).toHaveAttribute('href', '/learn/projects/first-light/1');
 });
 
 test('completes project 1 from the first step to done', async ({ page }) => {
@@ -37,9 +36,11 @@ test('completes project 1 from the first step to done', async ({ page }) => {
   await expect(page.getByText('Project complete.')).toBeVisible();
   await expect(page.getByText(/You built a complete circuit/)).toBeVisible();
 
-  // The path should now show the project as done.
-  await page.goto('/');
+  // The path should now show the project as done, and the home page should not offer it again.
+  await page.goto('/learn');
   await expect(page.getByText('Done ✓')).toBeVisible();
+  await page.goto('/');
+  await expect(page.getByText('Welcome back.')).toHaveCount(0);
 });
 
 test('a failed checkpoint shows ordered fixes, then recovers', async ({ page }) => {
@@ -61,7 +62,7 @@ test('a failed checkpoint shows ordered fixes, then recovers', async ({ page }) 
 
 test('progress survives a reload and can be reset', async ({ page }) => {
   await goToStep(page, 4);
-  await page.goto('/');
+  await page.goto('/learn');
   await expect(page.getByText('Continue at step 4')).toBeVisible();
 
   await page.reload();

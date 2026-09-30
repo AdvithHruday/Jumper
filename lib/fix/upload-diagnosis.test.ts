@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { diagnose, hex4, type UploadSignature, type UsbDevice } from './upload-doctor';
+import { diagnose, hex4, type UploadSignature, type UsbDevice } from './upload-diagnosis';
 
 const sig = (over: Partial<UploadSignature>): UploadSignature => ({
   id: 'a',

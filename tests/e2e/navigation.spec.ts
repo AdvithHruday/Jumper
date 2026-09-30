@@ -28,7 +28,7 @@ test('the Fix hub offers both tools and says when to use each', async ({ page })
   await expect(page.getByRole('heading', { name: 'Fix', level: 1 })).toBeVisible();
   await expect(page.getByText('The IDE shows a red error when you press Upload.')).toBeVisible();
   await expect(page.getByText('The upload works but an LED, sensor or motor does nothing.')).toBeVisible();
-  await page.getByRole('link', { name: /Upload Doctor/ }).first().click();
+  await page.getByRole('link', { name: /Fix my upload/ }).first().click();
   await expect(page).toHaveURL(/\/fix\/upload$/);
 });
 

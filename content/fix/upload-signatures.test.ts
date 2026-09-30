@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { UPLOAD_SIGNATURES, USB_DEVICES } from './upload-signatures';
-import { uploadSignatureSchema, diagnose } from '@/lib/fix/upload-doctor';
+import { uploadSignatureSchema, diagnose } from '@/lib/fix/upload-diagnosis';
 
 describe('upload signatures', () => {
   it('has unique ids', () => {

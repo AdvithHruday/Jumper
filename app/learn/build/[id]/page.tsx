@@ -130,7 +130,7 @@ export default async function BuildDetailPage({ params }: { params: Promise<{ id
       <p className="mb-0 mt-4">
         Upload failing?{' '}
         <Link href="/fix/upload" className="font-bold text-link underline">
-          Open the Upload Doctor
+          Open Fix my upload
         </Link>
         .
       </p>

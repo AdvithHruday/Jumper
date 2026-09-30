@@ -35,7 +35,7 @@ export const ledBlink: LibraryProject = {
     { symptom: 'The LED never lights', cause: 'It is in backwards.', fix: 'Turn it round: long leg toward pin 9 (through the resistor), short leg toward GND.' },
     { symptom: 'The LED never lights', cause: 'The resistor and LED are not in the same column, so the circuit is not complete.', fix: 'Check that the resistor leg and the LED leg share a column of five holes.' },
     { symptom: 'The LED never lights', cause: 'The pin in the sketch is not the pin you wired.', fix: 'Make LED_PIN in the sketch match the pin the jumper wire goes to.' },
-    { symptom: 'The upload fails', cause: 'Board, port or cable problem, not your wiring.', fix: 'Use the Upload Doctor with the error text.' },
+    { symptom: 'The upload fails', cause: 'Board, port or cable problem, not your wiring.', fix: 'Use Fix my upload with the error text.' },
   ],
   guidedId: 'first-light',
   verified: false,

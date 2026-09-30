@@ -7,7 +7,7 @@ test('the example finds a code-versus-wiring mismatch and pin bugs', async ({ pa
   await expect(page.getByLabel('Compare with a guided project')).toHaveValue('first-light');
   await expect(page.getByText(/connects the Red LED "led1" to pin 9/)).toBeVisible();
   await expect(page.getByText(/no PWM on the Arduino Uno/)).toBeVisible();
-  await expect(page.getByRole('link', { name: /open the upload doctor/i })).toHaveAttribute('href', '/fix/upload');
+  await expect(page.getByRole('link', { name: /open fix my upload/i })).toHaveAttribute('href', '/fix/upload');
 });
 
 test('a correct blink sketch is clean, with an honest caveat', async ({ page }) => {

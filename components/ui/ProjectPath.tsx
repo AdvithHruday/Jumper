@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Badge } from '@/components/ui/Badge';
-import { ButtonLink } from '@/components/ui/Button';
+import { Button, ButtonLink } from '@/components/ui/Button';
 import { useProgress } from '@/lib/progress/store';
 import { useHydrated } from '@/lib/progress/useHydrated';
 import type { Project } from '@/lib/schema/content';
@@ -82,14 +82,14 @@ export function ContinueButton({ projects }: { projects: Project[] }) {
 export function ResetProgress() {
   const reset = useProgress((s) => s.reset);
   return (
-    <button
-      type="button"
-      className="border-0 bg-transparent p-0 text-sm text-link underline"
+    <Button
+      variant="ghost"
+      size="sm"
       onClick={() => {
         if (confirm('Clear your saved progress for all projects?')) reset();
       }}
     >
       Reset progress
-    </button>
+    </Button>
   );
 }

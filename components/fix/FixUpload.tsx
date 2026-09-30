@@ -1,9 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { Eraser, FlaskConical, Usb } from 'lucide-react';
+import Link from 'next/link';
+import { useMemo, useState, type ReactNode } from 'react';
+import { ArrowRight, Eraser, FlaskConical, Usb } from 'lucide-react';
 import { useHydrated } from '@/lib/progress/useHydrated';
-import { diagnose, hex4, type UploadSignature, type UsbInfo } from '@/lib/fix/upload-doctor';
+import { diagnose, hex4, type UploadSignature, type UsbInfo } from '@/lib/fix/upload-diagnosis';
 import { UPLOAD_SIGNATURES, USB_DEVICES, GENERIC_UPLOAD_CHECKLIST } from '@/content/fix/upload-signatures';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -24,12 +25,14 @@ function getSerial(): SerialLike | undefined {
   return (navigator as unknown as { serial?: SerialLike }).serial;
 }
 
-const SAMPLE = 'avrdude: stk500_recv(): programmer is not responding\navrdude: stk500_getsync() attempt 1 of 10: not in sync: resp=0x00';
+/** A real avrdude failure. Also what the home page shows before anyone types. */
+export const EXAMPLE_ERROR =
+  'avrdude: stk500_recv(): programmer is not responding\navrdude: stk500_getsync() attempt 1 of 10: not in sync: resp=0x00';
 
-function Steps({ sig }: { sig: UploadSignature }) {
+function Steps({ sig, limit }: { sig: UploadSignature; limit?: number }) {
   return (
     <ol className="m-0 mt-2 list-decimal space-y-2 pl-5">
-      {sig.steps.map((s, i) => (
+      {sig.steps.slice(0, limit).map((s, i) => (
         <li key={i}>
           {s.text}
           {s.physical && <Badge className="ml-2">by hand</Badge>}
@@ -39,28 +42,50 @@ function Steps({ sig }: { sig: UploadSignature }) {
   );
 }
 
-function MatchCard({ sig, primary }: { sig: UploadSignature; primary: boolean }) {
+function MatchCard({
+  sig,
+  primary,
+  stepLimit,
+  footer,
+}: {
+  sig: UploadSignature;
+  primary: boolean;
+  /** Show only the first few steps, for the compact home-page demo. */
+  stepLimit?: number;
+  footer?: ReactNode;
+}) {
+  const compact = stepLimit !== undefined;
   return (
-    <Panel as="article" variant={primary ? 'highlight' : 'default'}>
+    <Panel as="article" variant={primary ? 'highlight' : 'default'} padding={compact ? 'sm' : 'md'}>
       <p className="m-0 text-caption font-bold uppercase tracking-wide text-muted">
         {primary ? 'Most likely' : 'Also in your log'}
       </p>
       <h2 className="mb-1 mt-1 text-xl font-extrabold">{sig.title}</h2>
       <p className="m-0 text-muted">{sig.meaning}</p>
-      <h3 className="mb-0 mt-4 font-body text-body font-bold">Likely causes, most likely first</h3>
-      <ul className="m-0 mt-1 list-disc space-y-1 pl-5 text-muted">
-        {sig.causes.map((c) => (
-          <li key={c}>{c}</li>
-        ))}
-      </ul>
+      {!compact && (
+        <>
+          <h3 className="mb-0 mt-4 font-body text-body font-bold">Likely causes, most likely first</h3>
+          <ul className="m-0 mt-1 list-disc space-y-1 pl-5 text-muted">
+            {sig.causes.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </>
+      )}
       <h3 className="mb-0 mt-4 font-body text-body font-bold">Try this, in order</h3>
-      <Steps sig={sig} />
+      <Steps sig={sig} limit={stepLimit} />
+      {footer}
     </Panel>
   );
 }
 
-export function UploadDoctor() {
-  const [log, setLog] = useState('');
+/**
+ * Paste an upload error, get ranked causes and fixes. The full page has the
+ * board detector and every step; `compact` is the home-page demo: the same
+ * matcher and the same content, one column, the top match, the first steps.
+ */
+export function FixUpload({ compact = false, initialLog = '' }: { compact?: boolean; initialLog?: string }) {
+  const [log, setLog] = useState(initialLog);
   const [usb, setUsb] = useState<UsbInfo | null>(null);
   const [usbNote, setUsbNote] = useState<string | null>(null);
   const hydrated = useHydrated();
@@ -90,6 +115,55 @@ export function UploadDoctor() {
   }
 
   const hasLog = log.trim().length > 0;
+  const top = result.matches[0];
+
+  if (compact) {
+    return (
+      <div>
+        <Label htmlFor="upload-log">Paste an upload error</Label>
+        <Textarea
+          id="upload-log"
+          mono
+          value={log}
+          onChange={(e) => setLog(e.target.value)}
+          rows={4}
+          spellCheck={false}
+          placeholder="avrdude: stk500_getsync() attempt 1 of 10: not in sync ..."
+        />
+        <p className="mb-3 mt-1.5 text-caption text-muted">
+          This is a real example. Paste your own to replace it. It runs in your browser; nothing is uploaded.
+        </p>
+        <div aria-live="polite">
+          {top && (
+            <MatchCard
+              sig={top}
+              primary
+              stepLimit={3}
+              footer={
+                <p className="mb-0 mt-3">
+                  <Link href="/fix/upload" className="inline-flex items-center gap-1.5 font-bold text-link underline underline-offset-2">
+                    See every step and fix your own upload <ArrowRight aria-hidden size={16} />
+                  </Link>
+                </p>
+              }
+            />
+          )}
+          {hasLog && !top && (
+            <Panel padding="sm">
+              <p className="m-0 font-bold">We do not recognise this error yet.</p>
+              <p className="mb-0 mt-1 text-small text-muted">
+                <Link href="/fix/upload" className="font-bold text-link underline underline-offset-2">
+                  Open Fix my upload
+                </Link>{' '}
+                for the checks that fix most failed uploads.
+              </p>
+            </Panel>
+          )}
+          {!hasLog && <Callout variant="info">Paste an error above and the likely cause shows up here.</Callout>}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
@@ -105,7 +179,7 @@ export function UploadDoctor() {
           placeholder="avrdude: stk500_getsync() attempt 1 of 10: not in sync ..."
         />
         <div className="mt-3 flex flex-wrap gap-2.5">
-          <Button icon={FlaskConical} onClick={() => setLog(SAMPLE)}>
+          <Button icon={FlaskConical} onClick={() => setLog(EXAMPLE_ERROR)}>
             Try an example
           </Button>
           {hasLog && (

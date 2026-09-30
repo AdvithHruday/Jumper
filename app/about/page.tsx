@@ -31,7 +31,7 @@ export default function AboutPage() {
         <h2 className={H2}>What it does today</h2>
         <ul className="m-0 space-y-2 pl-5">
           <li>
-            <Link href="/fix/upload" className={LINK}>Upload Doctor</Link>: paste an upload error and get the likely causes,
+            <Link href="/fix/upload" className={LINK}>Fix my upload</Link>: paste an upload error and get the likely causes,
             most likely first, with one fix per step.
           </li>
           <li>

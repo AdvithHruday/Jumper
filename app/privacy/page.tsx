@@ -33,7 +33,7 @@ export default function PrivacyPage() {
 
         <h2 className={H2}>Your code, errors and board</h2>
         <p>
-          Sketches you paste into Check my code and error text you paste into Upload Doctor are read in your browser and
+          Sketches you paste into Check my code and error text you paste into Fix my upload are read in your browser and
           are not uploaded. “Detect my board” only reads the USB chip ID of a port you pick, and it stays in your browser.
         </p>
 

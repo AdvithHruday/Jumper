@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Boxes } from 'lucide-react';
-import { ContinueButton, ProjectPath } from '@/components/ui/ProjectPath';
+import { ContinueButton, ProjectPath, ResetProgress } from '@/components/ui/ProjectPath';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Panel } from '@/components/ui/Panel';
 import { PROJECTS } from '@/content/projects';
@@ -25,7 +25,7 @@ export default function LearnPage() {
         <ProjectPath projects={PROJECTS} />
       </section>
 
-      <section className="mb-12 mt-2">
+      <section className="mt-2">
         <h2 className="m-0 text-2xl font-extrabold">Build from your kit</h2>
         <Link href="/learn/build" className="group mt-3 block rounded-panel">
           <Panel className="flex items-center gap-4 transition-shadow group-hover:shadow-[inset_0_0_0_1.5px_var(--border-ui)]">
@@ -40,6 +40,11 @@ export default function LearnPage() {
           </Panel>
         </Link>
       </section>
+
+      <div className="mb-12 mt-6 flex flex-wrap items-center justify-between gap-3 text-small text-muted">
+        <span>Your progress is saved in this browser.</span>
+        <ResetProgress />
+      </div>
     </>
   );
 }

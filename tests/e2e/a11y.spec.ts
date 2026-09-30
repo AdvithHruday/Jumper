@@ -39,7 +39,7 @@ const SCENARIOS: Scenario[] = [
     },
   },
   {
-    name: 'upload doctor (diagnosis)',
+    name: 'fix my upload (diagnosis)',
     path: '/fix/upload',
     act: async (page) => {
       await page.getByRole('button', { name: /try an example/i }).click();

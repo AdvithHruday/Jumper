@@ -37,7 +37,7 @@ export interface LintContext {
 
 export type LintRule = (ctx: LintContext) => LintFinding[];
 
-const UPLOAD_LINK = { href: '/fix/upload', label: 'Upload Doctor' };
+const UPLOAD_LINK = { href: '/fix/upload', label: 'Fix my upload' };
 
 /** analogRead(0) means A0 on AVR boards; normalise so every rule sees pin 14. */
 function normalise(board: BoardSpec, call: PinCall): number | null {
