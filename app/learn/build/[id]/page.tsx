@@ -19,6 +19,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 const LEVEL = { 1: 'Easy', 2: 'Medium', 3: 'Hard' } as const;
 
+const PART_LINK = 'text-link underline underline-offset-2';
+
 const H2 = 'mb-2 mt-8 border-b border-line pb-1.5 text-xl font-extrabold';
 
 export default async function BuildDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -58,9 +60,27 @@ export default async function BuildDetailPage({ params }: { params: Promise<{ id
       <ul className="m-0 list-disc space-y-1 pl-5">
         {p.requires.map((r) => (
           <li key={r.label}>
-            {r.label}
+            {r.oneOf.length === 1 ? (
+              <Link href={`/parts/${r.oneOf[0]}`} className={PART_LINK}>
+                {r.label}
+              </Link>
+            ) : (
+              r.label
+            )}
             {r.oneOf.length > 1 && (
-              <span className="text-muted"> (any of: {r.oneOf.map((i) => ITEMS_BY_ID[i]?.name ?? i).join(', ')})</span>
+              <span className="text-muted">
+                {' '}
+                (any of:{' '}
+                {r.oneOf.map((i, n) => (
+                  <span key={i}>
+                    {n > 0 && ', '}
+                    <Link href={`/parts/${i}`} className={PART_LINK}>
+                      {ITEMS_BY_ID[i]?.name ?? i}
+                    </Link>
+                  </span>
+                ))}
+                )
+              </span>
             )}
           </li>
         ))}

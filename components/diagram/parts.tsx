@@ -21,18 +21,20 @@ export type PartRenderer = (props: PartRenderProps) => React.ReactNode;
 
 const f1 = (n: number) => Math.round(n * 10) / 10;
 
-const LED_COLORS: Record<string, string> = {
+export const LED_COLORS: Record<string, string> = {
   red: '#E8322D',
   yellow: '#F7C325',
   green: '#33C46A',
 };
 
-const BAND_COLORS: Record<string, string> = {
+export const BAND_COLORS: Record<string, string> = {
   red: '#C62828',
   brown: '#6D4C2F',
   gold: '#C9A227',
   black: '#222',
   orange: '#EF7C1A',
+  yellow: '#E8C619',
+  violet: '#7B3FA0',
 };
 
 function placed(element: PartElement, pin: string, bb: BreadboardDef): Point | null {

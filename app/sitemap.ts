@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { LIBRARY } from '@/content/library';
+import { ITEMS, LIBRARY } from '@/content/library';
 import { PROJECTS } from '@/content/projects';
 import { SITE_URL } from '@/lib/brand';
 
@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/parts',
     '/about',
     '/privacy',
+    ...ITEMS.map((i) => `/parts/${i.id}`),
     ...LIBRARY.map((p) => `/learn/build/${p.id}`),
     ...PROJECTS.flatMap((p) => p.steps.map((_, i) => `/learn/projects/${p.id}/${i + 1}`)),
   ];

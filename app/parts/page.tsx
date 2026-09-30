@@ -1,36 +1,38 @@
-import { ALL_PARTS } from '@/content/parts';
+import { PartCard } from '@/components/parts/PartCard';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { getGuide, partGroups } from '@/lib/parts/guide';
 
-export const metadata = { title: 'Meet your parts' };
+export const metadata = {
+  title: 'Meet your parts',
+  description: 'Every part in the Ohmwise kit: a drawing, how to recognise it, which way round it goes, and what to watch for.',
+};
 
-/**
- * Milestone 1 stub. The full parts glossary, with a drawing of each part and
- * its own detail route, lands in milestone 2 alongside projects 2-5; the
- * content is already in the part records, so this page grows rather than
- * gets rewritten.
- */
 export default function PartsPage() {
+  const groups = partGroups();
+  const total = groups.reduce((n, g) => n + g.items.length, 0);
   return (
-    <>
+    <div className="pb-12">
       <PageHeader
         title="Meet your parts"
-        description="What each part does, how to recognise it, and what to watch out for."
+        description={`All ${total} parts in the kit. Each has a drawing, how to recognise it, which way round it goes, and what to watch out for.`}
       />
-      <div className="my-6 grid gap-7 sm:grid-cols-2">
-        {ALL_PARTS.map((part) => (
-          <article key={part.id}>
-            <h2 className="mb-1.5 text-xl font-extrabold">{part.name}</h2>
-            <dl className="m-0 text-[15px]">
-              <dt className="mt-1.5 font-bold">What it does</dt>
-              <dd className="m-0 text-muted">{part.glossary.what}</dd>
-              <dt className="mt-1.5 font-bold">How to spot it</dt>
-              <dd className="m-0 text-muted">{part.glossary.spot}</dd>
-              <dt className="mt-1.5 font-bold">Watch out</dt>
-              <dd className="m-0 text-muted">{part.glossary.watch}</dd>
-            </dl>
-          </article>
-        ))}
-      </div>
-    </>
+      {groups.map((group) => (
+        <section key={group.id} aria-labelledby={`group-${group.id}`} className="mt-8">
+          <h2 id={`group-${group.id}`} className="mb-3 text-xl font-extrabold">
+            {group.title}
+          </h2>
+          <ul className="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+            {group.items.map((item) => {
+              const guide = getGuide(item.id);
+              return guide ? (
+                <li key={item.id}>
+                  <PartCard guide={guide} />
+                </li>
+              ) : null;
+            })}
+          </ul>
+        </section>
+      ))}
+    </div>
   );
 }

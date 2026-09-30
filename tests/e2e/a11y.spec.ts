@@ -18,6 +18,9 @@ type Scenario = { name: string; path: string; act?: (page: Page) => Promise<void
 const SCENARIOS: Scenario[] = [
   { name: 'home', path: '/' },
   { name: 'parts', path: '/parts' },
+  { name: 'part (resistor with band reader)', path: '/parts/res-220' },
+  { name: 'part (board with pin facts)', path: '/parts/esp32-devkit-v1' },
+  { name: 'part (module, pin order varies)', path: '/parts/dht11' },
   { name: 'fix hub', path: '/fix' },
   { name: 'learn hub', path: '/learn' },
   { name: 'build (empty)', path: '/learn/build' },

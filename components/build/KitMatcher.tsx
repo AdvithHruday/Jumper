@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { Trash2 } from 'lucide-react';
 import { LIBRARY, ITEMS, ITEMS_BY_ID, KIT_PRESETS } from '@/content/library';
+import { CATEGORIES } from '@/content/library/categories';
 import { matchProjects, sortMatches, type Match } from '@/lib/library/match';
 import { useKit } from '@/lib/library/store';
 import { useHydrated } from '@/lib/progress/useHydrated';
@@ -14,16 +15,6 @@ import { Panel } from '@/components/ui/Panel';
 import { Stepper } from '@/components/ui/Stepper';
 import { PhotoScan } from './PhotoScan';
 
-const CATEGORIES: { id: LibraryItem['category']; title: string }[] = [
-  { id: 'board', title: 'Boards' },
-  { id: 'basics', title: 'Basics' },
-  { id: 'output', title: 'LEDs and sound' },
-  { id: 'input', title: 'Buttons and dials' },
-  { id: 'sensor', title: 'Sensors' },
-  { id: 'motion', title: 'Motors and servos' },
-  { id: 'display', title: 'Displays' },
-  { id: 'power', title: 'Power' },
-];
 
 const LEVEL = { 1: 'Easy', 2: 'Medium', 3: 'Hard' } as const;
 
